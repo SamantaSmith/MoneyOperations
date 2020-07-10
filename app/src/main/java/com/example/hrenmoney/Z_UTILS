@@ -1,0 +1,206 @@
+Note -> Operation
+note_table -> operation_table
+NoteDao -> OperationDao
+NoteDatabase -> OperationDatabase
+NoteRepository -> OperationRepository
+
+
+
+1. Добавил все необходимые dependencies
+
+2. Создаю класс Operation для одной денежной операции.
+Перед его объявлением пишу аннотацию @Entity.
+В скобках задаю параметр - имя таблицы
+
+3. Создаю 4 приватные переменные - category, description, value, id
+Перед id пишу аннотацию @PrimaryKey и в скобках пишу параметр autogenerate
+
+4. Генерирую геттеры для всех четырех переменных.
+Генерирую конструктор для всех переменных, кроме id
+Генерирую сеттер для id
+
+5. Создаю интерфейс OperationDao.
+Перед его объявлением пишу аннотацию @Dao
+Создаю методы для работы с БД - insert, update, delete, deleteAllOperations, getAllOperations
+
+6. Создаю класс OperationDatabase. Он будет наследоваться от RoomDatabase.
+Ставлю модификатор доступа abstract
+Перед объявлением класса пишу аннотацию @Database.
+В качестве параметров указываю entity - Operation.class, и version = 1
+
+7. Создаю переменную instance класса OperationDatabase и абстрактный метод operationDao
+
+8. Создаю метод getInstance.
+
+9. Создаю класс OperationRepository.
+Внутри него объявляю две переменные классов LiveData и OperationDao
+Создаю конструктор класса NoteRepository c параметром Application.
+
+10. Создаю методы для всех наших операций с БД. Пока что оставляю пустыми все, кроме
+последнего - его можно заполнить сразу.
+
+11. Создаю 4 AsyncTask'овых вспомогательных метода для оставшихся операций.
+Что внутри них происходит - я в душе не ебу, кстати.
+
+12. В созданных в шаге 10 методах применяет эти AsyncTask'и
+
+13. Переходим в класс OperationDatabase. Создаем метод класса RoomDatabase.Callback.
+Переопределяем внутри метод onCreate.
+
+14. Создаю класс PopulateDbAsyncTask. Он отвечает за первоначальное "население" БД.
+
+15. Возвращаемся в CallBack. Execut'им PopulateDbAsyncTask.
+
+16. Создаем класс OperationViewModel. Наследуется от класса AndroidViewModel.
+Внутри него создаем конструктор суперкласса.
+До конструктора создаем две переменные классов OperationRepository и LiveData
+В конструкторе определяем эти переменные.
+
+17. Создаем wrapper-методы для наших БД-операций.
+
+18. Переходим в MainActivity. До метода onCreate создаем переменную operationViewModel
+и константу ADD_OPERATION_REQUEST
+
+19. Внутри метода onCreate определяем эту переменную. Вызываем метод getAllOperations.
+В методе onChanged на этом этапе будет Тоаст, чтобы проверить работоспособность.
+Потом будет взаимодействие с RecyclerView.
+
+
+
+->->->->->ЗДЕСЬ МЫ ПРОВЕРИЛИ, ВСЕ РАБОТАЕТ->->->->->->->->
+
+
+
+20. Создаем XML-разметку для отдельной операции operation_item
+
+21. В activity_main создаем RecyclerView.
+
+22. Создаем класс OperationAdapter с суперклассом RecyclerView.Adapter. Внутри него создаем
+класс OperationHolder, который расширяем ViewHolder.
+Внутри OperationHolder создаем три переменные, которые будут отвечать за поля в single_item,
+и конструктор суперкласса.
+Внутри конструктора связываем созданные переменные с layout.
+
+23. В строчке с объявлением класса OperationAdapter в треугольных скобочках пишем имя
+созданного холдера, и имплементируем три необходимых метода суперкласса
+
+24. В самом начале класса создаем приватный лист с операциями
+
+25. Переходим в метод onCreateViewHolder. В нем создаем View-переменную и возвращаем её.
+
+26. Расписываем метод onBindViewHolder.
+
+27. В методе getItemCount меняем 0 на operations.size
+
+28. Сразу за методом getItemCount создаем метод setNotes.
+
+29. Переходим в MainActivity. Связываем recyclerView с Layout, устанавливаем layoutManager.
+Создаем и устанавливаем адаптер для RecyclerView.
+
+30. В методе onChanged меняем вызов Тоста на вызов метода setNotes для созданного адаптера.
+
+
+
+->->->->->ЗДЕСЬ МЫ ПРОВЕРИЛИ, ВСЕ РАБОТАЕТ->->->->->->->->
+
+
+
+31. Делаем вектор ассеты для FAB и меню
+
+32. Переходим в activity_main. Добавляем FAB
+
+33. Создаем новую активити с именем AddOperationActivity. Заполяем соответствующий
+xml-файл
+
+34. В папке res создаем директорию menu. Внутри этой папки создаем файл add_operation_menu.
+Заполняем этот файл.
+
+35. Переходим в AddOperationActivity. Создаем переменнные для полей, которые мы создали
+в layout.
+
+36. В методе onCreate связываем созданные переменные с полями в layout
+Задаем заголовок и кнопку закрытия активности.
+
+37. За пределами метода onCreate переопределяем метод onCreateOptionsMenu
+
+38. Следом переопределяем метод onOptionsItemSelected
+
+39. Частично реализуем метод saveOperation
+
+40. Сразу после объявления класса прописываем три psfs-переменные как ключи для передачи
+данных с наших полей.
+
+41. Дописываем метод saveOperation
+
+42. Возвращаемся в MainActivity. Связываем FAB с layout-файлом и реализуем для нее метод
+onClick
+
+43. Переопределяем метод onActivityResult.
+
+44. Переходим в манифест-файл. Добавляем строчку launchMode в объявлении MainActivity и
+и parentActivityMane в AddOperationActivity
+
+
+->->->->->ЗДЕСЬ МЫ ПРОВЕРИЛИ, ВСЕ РАБОТАЕТ->->->->->->->->
+
+45. Возвращаемся обратно в MainActivity. Частично реализуем swipe-to-delete функционал.
+
+46. Переходим в OperationAdapter. Реализуем метод getOperationAt.
+
+47. В MainActivity реализуем swipe-to-delete до конца
+
+
+
+->->->->->ЗДЕСЬ МЫ ПРОВЕРИЛИ, swipe-to-delete РАБОТАЕТ->->->->->->->->
+
+
+48. В папке menu создаем новый menu resource. Называем его main_menu и переходим в него.
+Заполняем его.
+
+49. Возвращаемся в MainActivity. Переопределяем методы onCreateOptionsMenu И
+onOptionsItemSelected.
+
+50. Переходим в класс OperationAdapter. Создаем интерфейс onItemClickListener и метод
+setOnItemClickListener.
+
+51. СОздаем переменную listener
+
+52. В конструкторе OperaionHolder задаем onClickListener для itemView.
+
+53. Возвращаемся в MainActivity. Задаем setOnItemClickListener для адаптера. Меняем имя
+AddOperationActivity на AddEditOperationActivity
+
+54. Переходим в AddEditOperationActivity. Создаем константу для ID.
+
+55. Возвращаемся в MainActivity. Создаем константу EDIT_OPERATION_REQUEST
+
+56. Переходим в созданный для адаптера метод onItemClick. Добавляем строчку с ID и startActivity
+
+57. Возвращаемся в AddEditOperationActivity. В методе onCreate расписываем обработку
+полученного из MainActivity интента.
+
+58. Переходим в метод saveOperation. Реализуем получение ID из интента.
+
+59. Идем в MainActivity, в метод onActivityResult. Добавляем проверку requestCode на соответствие
+EDIT_OPERATION_REQUEST, и собственно реализуем данную ветку if-ки
+
+
+
+->->->->->ЗДЕСЬ МЫ ПРОВЕРИЛИ, ВСЕ РАБОТАЕТ->->->->->->->->
+
+
+
+60. Переходим в класс OperationAdapter. Меняем объявление класса с extends RV.Adapter на
+extends ListAdapter. Создаем конструктор суперкласса.
+
+61. В этом новорожденном конструкторе меняем идентификатор доступа с protected На public.
+Удаляем объявление переменной operations.
+
+62. В методе onBindViewHolder меняем operations.get(position) на getItem.
+Удаляем метод getItemCount и setOperations
+
+63. В методе getOperationAt меняем operations.get на getItem. В OperationHolder то же самое
+
+64. В MainActivity в методе onChanged меняем setOperation на submitList
+
+
